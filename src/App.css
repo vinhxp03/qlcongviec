@@ -48,6 +48,10 @@
   padding-right: 5px;
 }
 
+#statusField:hover {
+  cursor: pointer;
+}
+
 .dropdown-menu .fa:before {
   padding-right: 10px;
 }

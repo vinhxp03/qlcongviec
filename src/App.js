@@ -10,7 +10,7 @@ class App extends Component {
         super(props);
         this.state = {
             tasks: [],
-            isDisplayForm: true
+            isDisplayForm: false
         };
     }
 
@@ -83,6 +83,38 @@ class App extends Component {
         // localStorage.setItem('tasks', JSON.stringify(tasks));
     }
 
+    onUpdateStatus = (id) => {
+        var { tasks } = this.state;
+        var newTasks = tasks.map((task) => {
+            if (task.id === id) {
+                task.status = !task.status
+            }
+
+            return task;
+        });
+        // console.log('old', this.state);
+        // console.log('new', newTasks);
+
+        this.setState({task: newTasks});
+        localStorage.setItem('tasks', JSON.stringify(newTasks));
+    }
+
+    onDeleteRow = (id) => {
+        var { tasks } = this.state;
+        var newTasks = [];
+
+        tasks.forEach((task) => {
+            if (task.id === id) {
+                return;
+            }
+
+            newTasks.push(task);
+        });
+
+        this.setState({tasks: newTasks});
+        localStorage.setItem('tasks', JSON.stringify(newTasks));
+    }
+
     render() {
         var  { tasks, isDisplayForm } = this.state;
         var elmTaskForm = isDisplayForm ? <TaskForm onSubmit={ this.onSubmit } onCloseForm={ this.onCloseForm } /> : '';
@@ -109,7 +141,11 @@ class App extends Component {
 
                         <TaskSearchControl />
                         <br/>
-                        <TaskList tasks={ tasks }/>
+                        <TaskList 
+                                tasks={ tasks } 
+                                onUpdateStatus={ this.onUpdateStatus }
+                                onDeleteRow={ this.onDeleteRow }
+                                />
                     </div>
                 </div>
             </div>
